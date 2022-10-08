@@ -26,6 +26,9 @@
       ],
       "features/*": [
         "./features/*"
+      ],
+      "types/*": [
+        "./types/*"
       ]
     }
   },
