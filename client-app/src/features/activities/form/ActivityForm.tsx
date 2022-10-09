@@ -6,11 +6,12 @@ type ActivityFormProps = {
   activity: Activity | undefined;
   closeForm(): void;
   createOrEdit(activity: Activity): void;
+  submitting: boolean
 }
 const ActivityForm: React.FC<ActivityFormProps> = (props) => {
   const { closeForm, activity: selectedActivity, createOrEdit } = props;
   const initialState: Activity = selectedActivity ?? {
-    id: crypto.randomUUID(),
+    id: '',
     title: '',
     category: '',
     description: '',
@@ -69,7 +70,7 @@ const ActivityForm: React.FC<ActivityFormProps> = (props) => {
           name="venue"
           onChange={handleInputChange}
         />
-        <Button floated="right" positive type="submit" content="Submit"/>
+        <Button loading={props.submitting} floated="right" positive type="submit" content="Submit"/>
         <Button onClick={closeForm} floated="right" positive type="button" content="Cancel"/>
       </Form>
     </Segment>
