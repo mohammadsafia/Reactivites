@@ -1,6 +1,7 @@
 ﻿using Application.Activities;
 using Application.Core;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -12,7 +13,10 @@ public static class ApplicationServiceExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
-        services.AddControllers();
+        services.AddControllers().AddFluentValidation(config =>
+        {
+            config.RegisterValidatorsFromAssemblyContaining<Create>();
+        });
         
         services.AddSwaggerGen(c =>
         {

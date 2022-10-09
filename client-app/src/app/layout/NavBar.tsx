@@ -12,6 +12,7 @@ const NavBar: React.FC<NavBarProps> = () => {
           Reactivities
         </Menu.Item>
         <Menu.Item as={NavLink} to="/activities" name="Activities"/>
+        <Menu.Item as={NavLink} to="/errors" name="Errors"/>
         <Menu.Item>
           <Button as={NavLink} to="/create-activity" positive content="Create Activity"/>
         </Menu.Item>
