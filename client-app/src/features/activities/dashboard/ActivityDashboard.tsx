@@ -15,13 +15,14 @@ type ActivityDashboardProps = {
   closeForm(): void;
   createOrEdit(activity: Activity): void;
   deleteActivity(id: string): void;
+  submitting: boolean;
 }
 const ActivityDashboard: React.FC<ActivityDashboardProps> = (props) => {
   const { activities, selectedActivity, selectActivity, cancelSelectActivity, createOrEdit, deleteActivity } = props;
   return (
     <Grid>
       <Grid.Column width="10">
-        <ActivityList deleteActivity={deleteActivity} activities={activities} selectActivity={selectActivity}/>
+        <ActivityList submitting={props.submitting} deleteActivity={deleteActivity} activities={activities} selectActivity={selectActivity}/>
       </Grid.Column>
       <Grid.Column width="6">
         {selectedActivity && !props.editMode && (
@@ -32,7 +33,8 @@ const ActivityDashboard: React.FC<ActivityDashboardProps> = (props) => {
           />
         )}
         {props.editMode && (
-          <ActivityForm createOrEdit={createOrEdit} closeForm={props.closeForm} activity={selectedActivity}/>
+          <ActivityForm submitting={props.submitting} createOrEdit={createOrEdit} closeForm={props.closeForm}
+                        activity={selectedActivity}/>
         )}
       </Grid.Column>
     </Grid>

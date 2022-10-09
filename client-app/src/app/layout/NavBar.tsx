@@ -1,10 +1,11 @@
 ﻿import React from 'react';
+
 import { Button, Container, Menu } from "semantic-ui-react";
 
 type NavBarProps = {
   openForm(): void;
 }
-const NavBar: React.FC<NavBarProps> = ({openForm}) => {
+const NavBar: React.FC<NavBarProps> = ({ openForm }) => {
   return (
     <Menu inverted fixed="top">
       <Container>
