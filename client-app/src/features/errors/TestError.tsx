@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import {Button, Header, Segment} from "semantic-ui-react";
+import { Button, Header, Segment } from "semantic-ui-react";
 import axios from 'axios';
 import ValidationErrors from "features/errors/ValidationErrors";
 
 export default function TestErrors() {
-  const baseUrl = 'http://localhost:5000/api/'
-  const [errors, setErrors] = useState<string[] | null>(null)
+  const baseUrl = 'http://localhost:5000/api/';
+  const [errors, setErrors] = useState<string[] | null>(null);
+  
   function handleNotFound() {
     axios.get(baseUrl + 'buggy/not-found').catch(err => console.log(err.response));
   }
@@ -32,20 +33,20 @@ export default function TestErrors() {
   
   return (
     <>
-      <Header as='h1' content='Test Error component' />
+      <Header as="h1" content="Test Error component"/>
       <Segment>
-        <Button.Group widths='7'>
-          <Button onClick={handleNotFound} content='Not Found' basic primary />
-          <Button onClick={handleBadRequest} content='Bad Request' basic primary />
-          <Button onClick={handleValidationError} content='Validation Error' basic primary />
-          <Button onClick={handleServerError} content='Server Error' basic primary />
-          <Button onClick={handleUnauthorised} content='Unauthorised' basic primary />
-          <Button onClick={handleBadGuid} content='Bad Guid' basic primary />
+        <Button.Group widths="7">
+          <Button onClick={handleNotFound} content="Not Found" basic primary/>
+          <Button onClick={handleBadRequest} content="Bad Request" basic primary/>
+          <Button onClick={handleValidationError} content="Validation Error" basic primary/>
+          <Button onClick={handleServerError} content="Server Error" basic primary/>
+          <Button onClick={handleUnauthorised} content="Unauthorised" basic primary/>
+          <Button onClick={handleBadGuid} content="Bad Guid" basic primary/>
         </Button.Group>
         {errors && (
           <ValidationErrors errors={errors}/>
         )}
       </Segment>
     </>
-  )
+  );
 }

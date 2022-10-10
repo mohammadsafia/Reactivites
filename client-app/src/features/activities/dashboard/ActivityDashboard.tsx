@@ -26,7 +26,7 @@ const ActivityDashboard: React.FC<ActivityDashboardProps> = () => {
       </Grid.Column>
       <Grid.Column width="6">
         <h2>Activity filters</h2>
-        <ActivityFilters />
+        <ActivityFilters/>
       </Grid.Column>
     </Grid>
   );
