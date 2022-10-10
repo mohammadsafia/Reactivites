@@ -5,11 +5,11 @@ export default class CommonStore {
   error: ServerError | null = null;
   
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this);
   }
   
-  setServerError = (serverError: ServerError)=> {
+  setServerError = (serverError: ServerError) => {
     this.error = serverError;
-  }
+  };
   
 }

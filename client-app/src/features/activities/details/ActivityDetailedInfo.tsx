@@ -2,11 +2,12 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Grid, Icon, Segment } from 'semantic-ui-react';
 import { Activity } from "types/activity.types";
+import { format } from "date-fns";
 
 type ActivityDetailedInfoProps = {
   activity: Activity
 }
-const ActivityDetailedInfo:React.FC<ActivityDetailedInfoProps> =({ activity }) =>{
+const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activity }) => {
   return (
     <Segment.Group>
       <Segment attached="top">
@@ -26,7 +27,7 @@ const ActivityDetailedInfo:React.FC<ActivityDetailedInfoProps> =({ activity }) =
           </Grid.Column>
           <Grid.Column width={15}>
                         <span>
-                            {activity.date}
+                            {format(activity.date!, 'dd MMM yyyy h:mm aa')}
                         </span>
           </Grid.Column>
         </Grid>
@@ -43,5 +44,5 @@ const ActivityDetailedInfo:React.FC<ActivityDetailedInfoProps> =({ activity }) =
       </Segment>
     </Segment.Group>
   );
-}
+};
 export default observer(ActivityDetailedInfo);

@@ -1,4 +1,4 @@
-export type ServerError  = {
+export type ServerError = {
   statusCode: number;
   message: string;
   details: string;
