@@ -1,6 +1,8 @@
-﻿namespace Domain;
+﻿using Application.Profiles;
 
-public class Activity
+namespace Application.Activities;
+
+public class ActivityDto
 {
     public Guid Id { get; set; }
 
@@ -15,7 +17,9 @@ public class Activity
     public string City { get; set; }
 
     public string Venue { get; set; }
-
+    public string HostUsername { get; set; }
+    
     public bool IsCancelled { get; set; }
-    public ICollection<ActivityAttendee> Attendees { get; set; } = new List<ActivityAttendee>();
+    
+    public ICollection<Profile> Attendees { get; set; }
 }
