@@ -1,8 +1,24 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { Button, Comment, Form, Header, Segment } from 'semantic-ui-react';
-
-const ActivityDetailedChat = () => {
+import React, { useEffect } from 'react';
+import { Comment, Header, Loader, Segment } from 'semantic-ui-react';
+import { useStore } from "app/stores/store";
+import { Link } from "react-router-dom";
+import { Formik, Form, Field, FieldProps } from "formik";
+import * as Yup from 'yup';
+import { formatDistanceToNow } from "date-fns";
+type ActivityDetailedChatProps = {
+  activityId: string;
+}
+const ActivityDetailedChat: React.FC<ActivityDetailedChatProps> = ({ activityId }) => {
+  const { commentStore } = useStore();
+  useEffect(() => {
+    if (activityId) {
+      commentStore.createHubConnection(activityId);
+    }
+    return () => {
+      commentStore.clearComments();
+    };
+  }, [commentStore, activityId]);
   return (
     <>
       <Segment
@@ -14,45 +30,54 @@ const ActivityDetailedChat = () => {
       >
         <Header>Chat about this event</Header>
       </Segment>
-      <Segment attached>
+      <Segment attached clearing>
+        <Formik
+          initialValues={{body: ''}}
+          onSubmit={(values, { resetForm }) =>
+            commentStore.addComment(values).then(() => resetForm())
+          }
+          validationSchema={Yup.object({
+            body: Yup.string().required()
+          })}
+        >
+          {({isSubmitting, isValid, handleSubmit})=> (
+            <Form className="ui form">
+              <Field name="body">
+                {(props: FieldProps)=> (
+                  <div style={{position: 'relative'}}>
+                    <Loader active={isSubmitting}/>
+                    <textarea onKeyPress={e=> {
+                      if(e.key === 'enter' && e.shiftKey){
+                        return;
+                      }
+                      if(e.key === 'Enter' && !e.shiftKey){
+                        e.preventDefault();
+                        isValid && handleSubmit()
+                      }
+                    }} {...props.field} rows={2} placeholder="Enter your comment (Enter to submit, SHIFT + enter for new line)"></textarea>
+                  </div>
+                )}
+              </Field>
+            </Form>
+          )}
+        </Formik>
         <Comment.Group>
-          <Comment>
-            <Comment.Avatar src="/assets/user.png"/>
-            <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
-              <Comment.Metadata>
-                <div>Today at 5:42PM</div>
-              </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
+          {commentStore.comments.map((comment) => (
+            <Comment key={comment.id}>
+              <Comment.Avatar src={comment.image || '/assets/user.png'}/>
+              <Comment.Content>
+                <Comment.Author as={Link} to={`/profiles/${comment.username}`}>{comment.displayName}</Comment.Author>
+                <Comment.Metadata>
+                  <div>{formatDistanceToNow(comment.createdAt)} ago</div>
+                </Comment.Metadata>
+                <Comment.Text style={{whiteSpace: 'pre-wrap'}}>{comment.body}</Comment.Text>
+              </Comment.Content>
+            </Comment>
+          ))}
           
-          <Comment>
-            <Comment.Avatar src="/assets/user.png"/>
-            <Comment.Content>
-              <Comment.Author as="a">Joe Henderson</Comment.Author>
-              <Comment.Metadata>
-                <div>5 days ago</div>
-              </Comment.Metadata>
-              <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
+        
           
-          <Form reply>
-            <Form.TextArea/>
-            <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
-              primary
-            />
-          </Form>
+
         </Comment.Group>
       </Segment>
     </>
