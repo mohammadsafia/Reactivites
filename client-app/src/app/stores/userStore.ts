@@ -58,6 +58,11 @@ export default class UserStore {
       this.user.image = image;
     }
   };
+
+  setDisplayName = (name: string) => {
+    if (this.user) this.user.displayName = name;
+  }
+  
   
   private successLogin = (user: User) => {
     store.commonStore.setToken(user.token);
