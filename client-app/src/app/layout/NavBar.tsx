@@ -23,7 +23,7 @@ const NavBar: React.FC<NavBarProps> = () => {
           <Image src={userStore.user?.image || '/assets/user.png'} avatar spaced="right"/>
           <Dropdown pointing="top left" text={userStore.user?.displayName}>
             <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={`/profile/${userStore.user?.username}`} text="My Profile" icon="user"/>
+              <Dropdown.Item as={Link} to={`/profiles/${userStore.user?.username}`} text="My Profile" icon="user"/>
               <Dropdown.Item onClick={userStore.logout} text="Logout" icon="power"/>
             </Dropdown.Menu>
           </Dropdown>
