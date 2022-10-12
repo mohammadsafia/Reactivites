@@ -17,6 +17,7 @@ import { useStore } from "app/stores/store";
 import { useEffect } from "react";
 import LoadingComponent from "app/layout/LoadingComponent";
 import ModalContainer from "app/common/modals/ModalContainer";
+import ProfilePage from "features/profiles/ProfilePage";
 
 function App() {
   const location = useLocation();
@@ -29,11 +30,11 @@ function App() {
     }
   }, [commonStore, userStore]);
   
-  if(!commonStore.appLoaded) return <LoadingComponent content="Loading app ..."/>
+  if (!commonStore.appLoaded) return <LoadingComponent content="Loading app ..."/>;
   return (
     <>
       <ToastContainer position="bottom-right" hideProgressBar/>
-      <ModalContainer />
+      <ModalContainer/>
       <Route exact path="/" component={HomePage}/>
       <Route path={'/(.+)'} render={() => (
         <>
@@ -43,6 +44,7 @@ function App() {
               <Route exact path="/activities" component={ActivityDashboard}/>
               <Route path="/activities/:id" component={ActivityDetails}/>
               <Route key={location.key} path={["/create-activity", '/manage/:id']} component={ActivityForm}/>
+              <Route path="/profiles/:username" component={ProfilePage}/>
               <Route path="/errors" component={TestErrors}/>
               <Route path="/server-error" component={ServerError}/>
               <Route path="/login" component={LoginForm}/>
