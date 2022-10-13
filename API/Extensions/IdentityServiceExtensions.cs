@@ -28,7 +28,7 @@ public static class IdentityServiceExtensions
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
                     ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateAudience = false
                 };
                 opt.Events = new JwtBearerEvents
                 {
@@ -36,10 +36,8 @@ public static class IdentityServiceExtensions
                     {
                         var accessToken = context.Request.Query["access_token"];
                         var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
-                        {
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
                             context.Token = accessToken;
-                        }
 
                         return Task.CompletedTask;
                     }

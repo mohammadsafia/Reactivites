@@ -12,13 +12,13 @@ public class SetMain
     {
         public string Id { get; set; }
     }
-    
-    public class Handler: IRequestHandler<Command, Result<Unit>>
+
+    public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
 
-        public Handler(DataContext context, IUserAccessor userAccessor )
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
             _userAccessor = userAccessor;
@@ -42,9 +42,9 @@ public class SetMain
             photo.IsMain = true;
 
             var success = await _context.SaveChangesAsync() > 0;
-            
-            if(success) return Result<Unit>.Success(Unit.Value);
-            
+
+            if (success) return Result<Unit>.Success(Unit.Value);
+
             return Result<Unit>.Failure("Problem setting main photo");
         }
     }

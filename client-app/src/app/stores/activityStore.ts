@@ -179,4 +179,15 @@ export default class ActivityStore {
   private getActivity = (id: string) => {
     return this.activityRegistry.get(id);
   };
+  
+  updateAttendeeFollowing = (username: string)=> {
+    this.activityRegistry.forEach(activity=>{
+      activity.attendees.forEach(attendee=> {
+        if(attendee.username === username){
+          attendee.following ? attendee.followerCount--: attendee.followerCount++;
+          attendee.following = !attendee.following
+        }
+      })
+    })
+  }
 }

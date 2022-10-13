@@ -3,6 +3,7 @@ import { Profile } from "types/profile.types";
 import { observer } from "mobx-react-lite";
 import { Card, Icon, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import FollowButton from "features/profiles/FollowButton";
 
 type ProfileCardProps = {
   profile: Profile
@@ -13,6 +14,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
       return str.length > 40 ? str.substring(0, 37) + '...' : str;
     }
   }
+  
   return (
     <Card as={Link} to={`/profiles/${profile.username}`}>
       <Image src={profile.image || '/assets/user.png'}/>
@@ -22,8 +24,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
       </Card.Content>
       <Card.Content extra>
         <Icon name="user"/>
-        20 followers
+        {profile.followerCount || '0'} followers
       </Card.Content>
+      <FollowButton profile={profile}/>
     </Card>
   );
 };
