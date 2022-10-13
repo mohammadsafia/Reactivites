@@ -24,14 +24,10 @@ public static class ApplicationServiceExtensions
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
             })
-            .AddFluentValidation(config =>
-        {
-            config.RegisterValidatorsFromAssemblyContaining<Create>();
-        });
-        
+            .AddFluentValidation(config => { config.RegisterValidatorsFromAssemblyContaining<Create>(); });
+
         services.AddSwaggerGen(c =>
         {
-          
             // Include 'SecurityScheme' to use JWT Authentication
             var jwtSecurityScheme = new OpenApiSecurityScheme
             {
@@ -48,9 +44,9 @@ public static class ApplicationServiceExtensions
                     Type = ReferenceType.SecurityScheme
                 }
             };
-            
+
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            
+
             c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -58,12 +54,9 @@ public static class ApplicationServiceExtensions
                 { jwtSecurityScheme, Array.Empty<string>() }
             });
         });
-        
-        services.AddDbContext<DataContext>(opt =>
-        {
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-        });
-        
+
+        services.AddDbContext<DataContext>(opt => { opt.UseSqlite(config.GetConnectionString("DefaultConnection")); });
+
         services.AddCors(opt =>
         {
             opt.AddPolicy("CorsPolicy",
@@ -72,19 +65,19 @@ public static class ApplicationServiceExtensions
                     policy.AllowAnyMethod().AllowCredentials().AllowAnyHeader().WithOrigins("http://localhost:3000");
                 });
         });
-        
+
         services.AddMediatR(typeof(List.Handler).Assembly);
-        
+
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
         services.AddScoped<IUserAccessor, UserAccessor>();
-        
+
         services.AddScoped<IPhotoAccessor, PhotoAccessor>();
-        
+
         services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
         services.AddSignalR();
-        
+
         return services;
     }
 }

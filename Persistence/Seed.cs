@@ -12,37 +12,34 @@ public class Seed
         {
             var users = new List<AppUser>
             {
-                new AppUser
+                new()
                 {
                     DisplayName = "Bob",
                     UserName = "bob",
                     Email = "bob@test.com",
-                    Bio = "",
+                    Bio = ""
                 },
-                new AppUser
+                new()
                 {
                     DisplayName = "Jane",
                     UserName = "jane",
                     Email = "jane@test.com",
-                    Bio = "",
+                    Bio = ""
                 },
-                new AppUser
+                new()
                 {
                     DisplayName = "Tom",
                     UserName = "tom",
                     Email = "tom@test.com",
-                    Bio = "",
-                },
+                    Bio = ""
+                }
             };
 
-            foreach (var user in users)
-            {
-                await userManager.CreateAsync(user, "Pa$$w0rd");
-            }
+            foreach (var user in users) await userManager.CreateAsync(user, "Pa$$w0rd");
 
             var activities = new List<Activity>
             {
-                new Activity
+                new()
                 {
                     Title = "Past Activity 1",
                     Date = DateTime.Now.AddMonths(-2),
@@ -52,14 +49,14 @@ public class Seed
                     Venue = "Pub",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[0],
                             IsHost = true
                         }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Past Activity 2",
                     Date = DateTime.Now.AddMonths(-1),
@@ -69,19 +66,19 @@ public class Seed
                     Venue = "The Louvre",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[0],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[1],
                             IsHost = false
-                        },
+                        }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 1",
                     Date = DateTime.Now.AddMonths(1),
@@ -91,19 +88,19 @@ public class Seed
                     Venue = "Wembly Stadium",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[2],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[1],
                             IsHost = false
-                        },
+                        }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 2",
                     Date = DateTime.Now.AddMonths(2),
@@ -113,19 +110,19 @@ public class Seed
                     Venue = "Jamies Italian",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[0],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[2],
                             IsHost = false
-                        },
+                        }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 3",
                     Date = DateTime.Now.AddMonths(3),
@@ -135,19 +132,19 @@ public class Seed
                     Venue = "Pub",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[1],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[0],
                             IsHost = false
-                        },
+                        }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 4",
                     Date = DateTime.Now.AddMonths(4),
@@ -157,14 +154,14 @@ public class Seed
                     Venue = "British Museum",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[1],
                             IsHost = true
                         }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 5",
                     Date = DateTime.Now.AddMonths(5),
@@ -174,19 +171,19 @@ public class Seed
                     Venue = "Punch and Judy",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[0],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[1],
                             IsHost = false
-                        },
+                        }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 6",
                     Date = DateTime.Now.AddMonths(6),
@@ -196,19 +193,19 @@ public class Seed
                     Venue = "O2 Arena",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[2],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[1],
                             IsHost = false
-                        },
+                        }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 7",
                     Date = DateTime.Now.AddMonths(7),
@@ -218,19 +215,19 @@ public class Seed
                     Venue = "All",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[0],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[2],
                             IsHost = false
-                        },
+                        }
                     }
                 },
-                new Activity
+                new()
                 {
                     Title = "Future Activity 8",
                     Date = DateTime.Now.AddMonths(8),
@@ -240,16 +237,16 @@ public class Seed
                     Venue = "Pub",
                     Attendees = new List<ActivityAttendee>
                     {
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[2],
                             IsHost = true
                         },
-                        new ActivityAttendee
+                        new()
                         {
                             AppUser = users[1],
                             IsHost = false
-                        },
+                        }
                     }
                 }
             };
