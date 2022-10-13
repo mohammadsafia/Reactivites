@@ -1,5 +1,5 @@
 import { requests } from "app/api/requests";
-import { Photo, Predicate, Profile } from "types";
+import { Photo, Predicate, Profile, UserActivity } from "types";
 import axios from "axios";
 
 export const ProfilesApi = {
@@ -22,5 +22,8 @@ export const ProfilesApi = {
   updateFollowing: (username: string) => requests.post<void>(`/follow/${username}`, {}),
   
   listFollowings: (username: string, predicate: Predicate) =>
-    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+  
+  listActivities: (username: string, predicate: string) =>
+    requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 };

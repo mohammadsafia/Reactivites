@@ -1,5 +1,5 @@
 import React from 'react';
-import { Profile } from "types/profile.types";
+import { Profile } from "types";
 import { observer } from "mobx-react-lite";
 import { Card, Icon, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";

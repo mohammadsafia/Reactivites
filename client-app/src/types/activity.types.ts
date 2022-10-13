@@ -43,3 +43,5 @@ export class ActivityFormValues {
     }
   }
 }
+
+export type FilterPredicate = 'all' | 'isGoing' | 'isHost' | 'startDate';
