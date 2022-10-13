@@ -25,4 +25,11 @@ export interface Photo {
   isMain: boolean;
 }
 
-export type Predicate = 'followings' | 'followers'
+export type Predicate = 'followings' | 'followers';
+
+export interface UserActivity {
+  id: string;
+  title: string;
+  category: string;
+  date: Date;
+}

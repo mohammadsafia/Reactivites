@@ -1,5 +1,5 @@
-import { makeAutoObservable, runInAction } from "mobx";
-import { Activity, ActivityFormValues, Profile } from "types";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { Activity, ActivityFormValues, FilterPredicate, Pagination, PagingParams, Profile } from "types";
 import agent from "app/api/agent";
 import { format } from "date-fns";
 import { store } from "app/stores/store";
@@ -7,17 +7,42 @@ import { store } from "app/stores/store";
 export default class ActivityStore {
   activityRegistry = new Map<string, Activity>();
   selectedActivity: Activity | undefined = undefined;
-  editMode = false;
   loading = false;
   loadingInitial = false;
+  pagination: Pagination | null = null;
+  pagingParams = new PagingParams();
+  predicate = new Map<FilterPredicate, boolean | Date | string>().set('all', true);
+  
   
   constructor() {
     makeAutoObservable(this);
+    reaction(
+      () => this.predicate.keys(),
+      () => {
+        this.pagingParams = new PagingParams();
+        this.activityRegistry.clear();
+        this.loadActivities();
+      }
+    );
   }
   
   get activitiesByDate() {
     return Array.from(this.activityRegistry.values())
       .sort((a, b) => a.date!.getTime() - b.date!.getTime());
+  }
+  
+  get axiosParams() {
+    const params = new URLSearchParams();
+    params.append('pageNumber', this.pagingParams.pageNumber.toString());
+    params.append('pageSize', this.pagingParams.pageSize.toString());
+    this.predicate.forEach((value, key) => {
+      if (key === 'startDate') {
+        params.append(key, (value as Date).toISOString());
+      } else {
+        params.append(key, value.toString());
+      }
+    });
+    return params;
   }
   
   get groupedActivities() {
@@ -30,19 +55,52 @@ export default class ActivityStore {
     );
   }
   
+  setPagingParams = (pagingParams: PagingParams) => {
+    this.pagingParams = pagingParams;
+  };
+  
+  setPredicate = (predicate: FilterPredicate, value: string | Date) => {
+    const resetPredicate = () => {
+      this.predicate.forEach((value, key) => {
+        if (key !== 'startDate') this.predicate.delete(key);
+      });
+    };
+    switch (predicate) {
+      case 'all':
+        resetPredicate();
+        this.predicate.set('all', true);
+        break;
+      case 'isGoing':
+        resetPredicate();
+        this.predicate.set('isGoing', true);
+        break;
+      case 'isHost':
+        resetPredicate();
+        this.predicate.set('isHost', true);
+        break;
+      case 'startDate':
+        this.predicate.delete('startDate');
+        this.predicate.set('startDate', value);
+    }
+  };
+  
   loadActivities = async () => {
     this.loadingInitial = true;
     try {
-      const activities = await agent.Activities.list();
-      activities.forEach(activity => {
+      const { data, pagination } = await agent.Activities.list(this.axiosParams);
+      data.forEach(activity => {
         this.setActivity(activity);
       });
-      
+      this.setPagination(pagination);
     } catch (error) {
       console.log(error);
     } finally {
       this.setLoadingInitial(false);
     }
+  };
+  
+  setPagination = (pagination: Pagination) => {
+    this.pagination = pagination;
   };
   
   loadActivity = async (id: string) => {
@@ -152,7 +210,7 @@ export default class ActivityStore {
       await agent.Activities.attend(this.selectedActivity!.id);
       runInAction(() => {
         this.selectedActivity!.isCancelled = !this.selectedActivity?.isCancelled;
-        this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!)
+        this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
       });
     } catch (e) {
       console.log(e);
@@ -161,9 +219,20 @@ export default class ActivityStore {
     }
   };
   
-  clearSelectedActivity = ()=> {
+  clearSelectedActivity = () => {
     this.selectedActivity = undefined;
-  }
+  };
+  
+  updateAttendeeFollowing = (username: string) => {
+    this.activityRegistry.forEach(activity => {
+      activity.attendees.forEach(attendee => {
+        if (attendee.username === username) {
+          attendee.following ? attendee.followerCount-- : attendee.followerCount++;
+          attendee.following = !attendee.following;
+        }
+      });
+    });
+  };
   
   private setActivity = (activity: Activity) => {
     const user = store.userStore.user;
@@ -179,15 +248,4 @@ export default class ActivityStore {
   private getActivity = (id: string) => {
     return this.activityRegistry.get(id);
   };
-  
-  updateAttendeeFollowing = (username: string)=> {
-    this.activityRegistry.forEach(activity=>{
-      activity.attendees.forEach(attendee=> {
-        if(attendee.username === username){
-          attendee.following ? attendee.followerCount--: attendee.followerCount++;
-          attendee.following = !attendee.following
-        }
-      })
-    })
-  }
 }

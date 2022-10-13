@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "app/stores/store";
 import { Card, Grid, Header, Tab } from "semantic-ui-react";
 import ProfileCard from "features/profiles/ProfileCard";
-import { Predicate } from "types/profile.types";
+import { Predicate } from "types";
 
 type ProfileFollowingsProps = {
   predicate: Predicate;
