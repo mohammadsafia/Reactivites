@@ -9,7 +9,7 @@ export const ProfilesApi = {
     let formDate = new FormData();
     formDate.append('File', file);
     return axios.post<Photo>('photos', formDate, {
-      headers: { 'Content-type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
   
