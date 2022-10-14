@@ -86,6 +86,7 @@ const ActivityDetailedHeader: React.FC<ActivityDetailedHeaderProps> = ({ activit
             disabled={activity.isCancelled}
             onClick={updateAttendance}
             color="teal"
+            loading={loading}
           >
             Join Activity
           </Button>
